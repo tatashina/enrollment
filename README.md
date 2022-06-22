@@ -18,6 +18,7 @@ https://installing-1887.usr.yandex-academy.ru
 * Spring Boot 2.6.7
 * PostgreSQL 14.3
 * Python 3.10.4 (для тестов)
+* Maven 3.8.6
 * Docker-compose 2.6.0 (для разворачивания в докере)
 
 ## Тесты
@@ -30,7 +31,7 @@ https://installing-1887.usr.yandex-academy.ru
 Для запуска проекта должен быть установлен docker-compose:
 Разворачивается по адресу 0.0.0.0:80
 ```
-$ cd ../src/main/docker
+$ mvn clean install -Dmaven.test.skip
 $ docker-compose up
 ```
 
