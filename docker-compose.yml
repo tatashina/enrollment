@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  db:
+    image: 'postgres'
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=yandex
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./src/main/resources/migration.sql:/docker-entrypoint-initdb.d/migration.sql
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:5050"
+    restart: always
+
+  app:
+    image: 'enrollment:latest'
+    build:
+      context: .
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    restart: always
+
+volumes:
+  postgres-data:
+  pgadmin:
